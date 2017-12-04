@@ -1,0 +1,178 @@
+"  ▄█    █▄   ▄█    ▄▄▄▄███▄▄▄▄
+" ███    ███ ███  ▄██▀▀▀███▀▀▀██▄
+" ███    ███ ███▌ ███   ███   ███
+" ███    ███ ███▌ ███   ███   ███
+" ███    ███ ███▌ ███   ███   ███
+" ███    ███ ███  ███   ███   ███
+" ███    ███ ███  ███   ███   ███
+"  ▀██████▀  █▀    ▀█   ███   █▀
+
+" ==================================================================================================
+" General settings
+" ==================================================================================================
+
+" base
+set nocompatible                      " vim, not vi
+
+" interface
+set number                            " show line numbers
+set relativenumber                    " show relative line numbers
+set ruler                             " show current position at bottom
+set scrolloff=5                       " keep at least 5 lines above/below
+set showcmd                           " show any commands
+set sidescrolloff=5                   " keep at least 5 lines left/right
+
+" whitespace
+set expandtab                         " use tabs instead of spaces
+set nojoinspaces                      " use one space, not two, after punctuation
+set shiftround                        " shift to next tabstop
+set shiftwidth=4                      " amount of space used for indentation
+set softtabstop=4                     " appearance of tabs
+set tabstop=4                         " use two spaces for tabs
+
+" folding
+set nofoldenable                      " disable folds
+
+" easy system, clipboard copy/paste
+noremap <leader>y "*y
+noremap <leader>Y "*Y
+noremap <leader>p "*p
+noremap <leader>P "*P
+
+" easy window navigation
+nnoremap <c-l> <c-w>l
+nnoremap <c-j> <c-w>j
+nnoremap <c-h> <c-w>h
+nnoremap <c-k> <c-w>k
+nnoremap <a-h> gT
+nnoremap <a-l> gt
+nnoremap <c-s-tab> gT
+nnoremap <c-tab> gt
+
+" Insert mode
+inoremap <C-k> <Up>
+inoremap <C-j> <Down>
+inoremap <C-l> <Right>
+inoremap <C-h> <Left>
+
+" text appearance
+set list                              " show invisible characters
+set listchars=tab:>·,trail:·,nbsp:¬   " but only show useful characters
+set nowrap                            " disable line wrapping
+
+" interaction
+set backspace=2                       " make backspace work like most other apps
+set whichwrap=b,s,h,l,<,>,[,]         " backspace and cursor keys wrap too
+
+" searching
+set hlsearch                          " highlight search matches
+set ignorecase                        " set case insensitive searching
+set incsearch                         " find as you type search
+set smartcase                         " case sensitive searching when not all lowercase
+
+" ==================================================================================================
+" Keys
+" ==================================================================================================
+
+" set leader to space
+let mapleader = " "
+
+" map semicolon to colon and vice versa
+nnoremap ; :
+nnoremap : ;
+vnoremap ; :
+vnoremap : ;
+
+" keep selection after indent
+vnoremap < <gv
+vnoremap > >gv
+
+" press enter for newline without insert
+nnoremap <cr> o<esc>
+
+" make moving to beginning and end of lines easier
+noremap H ^
+noremap L $
+
+" reload vim config
+nnoremap <leader>r :source $MYVIMRC<CR>
+
+" clear search
+nnoremap <leader>c :let @/ = ""<CR>
+
+" upper or lowercase the current word
+nnoremap <leader>^ gUiW
+nnoremap <leader>v guiW
+
+" actions
+nnoremap <leader>q :action CloseContent<cr>
+nnoremap <leader>Q :action ReopenClosedTab<cr>
+nnoremap <leader>\ :action VimFilePrevious<cr>
+nnoremap <leader>E :action Switcher<cr>
+nnoremap <leader>t :action FileStructurePopup<cr>
+nnoremap <leader>s :action GotoSymbol<cr>
+nnoremap <leader>a :action GotoAction<cr>
+nnoremap <leader>b :action ToggleLineBreakpoint<cr>
+nnoremap <leader>; :action AceAction<CR>
+noremap <leader>M :action MethodHierarchy<CR>
+noremap <leader>T :action TypeHierarchy<CR>
+noremap <leader>C :action CallHierarchy<CR>
+nnoremap K :action GotoDeclaration<CR>
+nnoremap gK :action GotoTypeDeclaration<CR>
+
+" code navigation
+nnoremap gjK :action QuickJavaDoc<CR>
+nnoremap <leader>] :action GotoImplementation<cr>
+nnoremap <leader>[ :action GotoSuperMethod<cr>
+nnoremap <leader>u :action FindUsages<cr>
+nnoremap <leader>gt :action GotoTest<cr>
+nnoremap <leader>k :action HighlightUsagesInFile<cr>
+nnoremap \r :action RunClass<cr>
+nnoremap \R :action Run<cr>
+nnoremap \d :action DebugClass<cr>
+nnoremap \D :action Debug<cr>
+nnoremap \c :action CheckStyleCurrentFileAction<cr>
+
+" code refactoring
+nnoremap <leader>rr :action RenameElement<cr>
+
+" unimpaired mappings
+nnoremap [<leader> O<esc>j
+nnoremap ]<leader> o<esc>k
+nnoremap [q :action PreviousOccurence<cr>
+nnoremap ]q :action NextOccurence<cr>
+nnoremap [[ :action MethodUp<cr>
+nnoremap ]] :action MethodDown<cr>
+nnoremap [c :action VcsShowPrevChangeMarker<cr>
+nnoremap ]c :action VcsShowNextChangeMarker<cr>
+
+
+" built-in navigation to navigated items works better
+nnoremap <c-o> :action Back<cr>
+nnoremap <c-i> :action Forward<cr>
+" but preserve ideavim defaults
+nnoremap g<c-o> <c-o>
+nnoremap g<c-i> <c-i>
+
+" built in search looks better
+nnoremap / :action Find<cr>
+" but preserve ideavim search
+nnoremap g/ /
+
+" ==================================================================================================
+" Autocommands
+" ==================================================================================================
+
+augroup vimrcEx
+  autocmd!
+
+  " disable comment continuation
+  autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
+
+  " only show a cursorline in the active window
+  autocmd WinLeave * set nocursorline
+  autocmd WinEnter * set cursorline
+  autocmd InsertEnter * set nocursorline
+  autocmd InsertLeave * set cursorline
+augroup END
+
